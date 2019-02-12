@@ -260,6 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
       print('$date marked');
     }
   }
+  // done-wk 9 撤销上一次操作
   /// 撤销标记点击的日期
   void _clearEventOnCalendar(DateTime date) {
     while (date.isBefore(this._poOrder.dateTimeOut)) {
