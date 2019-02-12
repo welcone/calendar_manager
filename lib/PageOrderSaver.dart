@@ -19,9 +19,6 @@ class _State4OrderSaver extends State<PageOrderSaver> {
 
   _State4OrderSaver(this._poOrder);
 
-
-
-
   // todo-wk 1.1> 返回房源列表
   /// 返回房源列表
   get _showInput4RoomLabel {
@@ -35,8 +32,6 @@ class _State4OrderSaver extends State<PageOrderSaver> {
       ),
     );
   }
-
-  
 
   /// 为方法：_input4RoomLabel,返回房源列表的数据项目
   get _dropItems {
@@ -71,6 +66,8 @@ class _State4OrderSaver extends State<PageOrderSaver> {
       appBar: AppBar(
         title: Text('订单录入'),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: _onSubmit, icon: Icon(Icons.save), label: Text('保存')),
       // 主页面
       body: Builder(builder: (BuildContext context) {
         return Container(
@@ -90,7 +87,6 @@ class _State4OrderSaver extends State<PageOrderSaver> {
                 _showDateTimePicker('离开时间', (dt) {
                   this._poOrder.dateTimeOut = dt;
                 }),
-                _showSubmitButton,
               ],
             ),
           ),
@@ -128,18 +124,10 @@ class _State4OrderSaver extends State<PageOrderSaver> {
     );
   }
 
-  /// 显示提交按钮
-  get _showSubmitButton {
-    return RaisedButton(
-      onPressed: _onSubmit,
-      child: Text('提交'),
-    );
-  }
-
   /// 处理返回数据
   void _onSubmit() {
 //    Navigator.pop(context,_poOrder);
     print('datetime in : ${this._poOrder}');
-    Navigator.pop(context,this._poOrder);
+    Navigator.pop(context, this._poOrder);
   }
 }

@@ -54,9 +54,7 @@ class MyHomePage extends StatefulWidget {
 const int _pageToOrderSaver = 0;
 
 class _MyHomePageState extends State<MyHomePage> {
-
   PoOrder _poOrder = PoOrder()..roomLable = PoOrder.roomLabels[0];
-
 
   @override
   void initState() {
@@ -81,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
   /// 为方法：_input4RoomLabel,返回房源列表的数据项目
   get _dropItems {
     // todo-wk > 服务器做一个界面，管理房源列表
@@ -91,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     });
   }
+
   // todo-wk 1.3>
   /// 保存下来选中的数据项目(PO:https://www.cnblogs.com/whatarewords/p/8086120.html)
   void saveDropDownItemData(t) {
@@ -105,10 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return new Scaffold(
         appBar: new AppBar(
           title: new Text(widget.title),
-          actions: <Widget>[
-            _showInput4RoomLabel
-          ],
+          actions: <Widget>[_showInput4RoomLabel],
         ),
+        floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              _navigateToPageOrderSaver(context, DateTime.now());
+            }, icon: Icon(Icons.save), label: Text('添加')),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,8 +189,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
-
   /// Example Calendar Carousel without header and custom prev & next button
   get _calendarCarouselNoHeader {
     return Builder(builder: (BuildContext context) {
@@ -198,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
           todayBorderColor: Colors.green,
           onDayPressed: (DateTime date, List events) {
             this.setState(() => _currentDate2 = date);
-            _navigateToPageOrderSaver(context,date);
+            _navigateToPageOrderSaver(context, date);
           },
           weekendTextStyle: TextStyle(
             color: Colors.red,
@@ -234,8 +234,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-
-
   /// 标记点击的日期
   void _markEventOnCalendar(DateTime date) {
     _markedDateMap.add(
@@ -243,9 +241,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// 跳转到下一个页面
-  void _navigateTo(int index) async {
+  void _navigateTo(int index) async {}
 
-  }
   /// 处理跳转事件
   void _navigateToPageOrderSaver(BuildContext context, DateTime date) async {
     final result = await Navigator.push(
@@ -255,5 +252,4 @@ class _MyHomePageState extends State<MyHomePage> {
                 PageOrderSaver(this._poOrder..dateTimeIn = date)));
     print('received data from page order saver${result}');
   }
-
 }
