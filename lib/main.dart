@@ -215,6 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
           todayBorderColor: Colors.green,
           onDayPressed: (DateTime date, List events) {
             this.setState(() => _currentDate2 = date);
+            print('main poOrder:$_poOrder');
             _navigateToPageOrderSaver(context, date);
           },
           weekendTextStyle: TextStyle(
@@ -253,14 +254,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// 标记点击的日期
   void _markEventOnCalendar(DateTime date) {
-    while (date.isBefore(this._poOrder.dateTimeOut)) {
+    // todo-wk 12> done 解决录入订单的日期bug，用到了 date.difference
+    int diffDays = date.difference(this._poOrder.dateTimeOut).inDays;
+    print(' daydiffs: $diffDays');
+    while (diffDays<0) {
       _markedDateMap.add(
           date, Event(title: 'event new', icon: _eventIcon, date: date));
+      print('$date marked, daydiffs: $diffDays');
       date = date.add(Duration(days: 1));
-      print('$date marked');
+      diffDays = date.difference(this._poOrder.dateTimeOut).inDays;
     }
   }
-  // done-wk 9 撤销上一次操作
+  // todo-wk 9 > Done 撤销上一次操作
   /// 撤销标记点击的日期
   void _clearEventOnCalendar(DateTime date) {
     while (date.isBefore(this._poOrder.dateTimeOut)) {

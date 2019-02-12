@@ -81,6 +81,8 @@ class _State4OrderSaver extends State<PageOrderSaver> {
           return Container(
             padding: EdgeInsets.all(8),
             child: Center(
+              // todo-wk 11>  使用表单验证数据可靠性 https://www.cnblogs.com/pengshaomin/p/8945720.html
+
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +127,8 @@ class _State4OrderSaver extends State<PageOrderSaver> {
           inputType: _inputType,
           editable: true,
           format: _formats[_inputType],
-          initialValue: _poOrder.dateTimeIn,
+          // todo-wk 10> done： 默认不设置离开时间
+          initialValue: pickerLabel == '入住时间'?_poOrder.dateTimeIn : null,
           decoration: InputDecoration(
               labelText: '设置日期/时间', hasFloatingPlaceholder: false),
           onChanged: onDateChange,
