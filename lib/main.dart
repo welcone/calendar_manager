@@ -51,7 +51,6 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-const int _pageToOrderSaver = 0;
 
 class _MyHomePageState extends State<MyHomePage> {
   PoOrder _poOrder = PoOrder()..roomLable = PoOrder.roomLabels[0];

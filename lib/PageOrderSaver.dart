@@ -61,37 +61,46 @@ class _State4OrderSaver extends State<PageOrderSaver> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // 导航栏
-      appBar: AppBar(
-        title: Text('订单录入'),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: _onSubmit, icon: Icon(Icons.save), label: Text('保存')),
-      // 主页面
-      body: Builder(builder: (BuildContext context) {
-        return Container(
-          padding: EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                _showInput4RoomLabel,
-                _showDateTimePicker('入住时间', (dt) {
-                  setState(() {
-                    this._poOrder.dateTimeIn = dt;
-                  });
-                }),
-                _showDateTimePicker('离开时间', (dt) {
-                  this._poOrder.dateTimeOut = dt;
-                }),
-              ],
+    return WillPopScope(
+      // todo-wk 5> 解决没有录入的时候返回的崩溃，https://blog.csdn.net/qq_32319999/article/details/80333511
+      // 解决这个有两个办法：
+      onWillPop: () {
+         Navigator.pop(context, this._poOrder);
+         return Future.value(false);
+      },
+      child: Scaffold(
+        // 导航栏
+        appBar: AppBar(
+          title: Text('订单录入'),
+//          leading: null, 解决todo 5 的问题的办法之一，不过用用户角度来讲，是不友好的，用户也可以通过return 返回
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+            onPressed: _onSubmit, icon: Icon(Icons.save), label: Text('保存')),
+        // 主页面
+        body: Builder(builder: (BuildContext context) {
+          return Container(
+            padding: EdgeInsets.all(8),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  _showInput4RoomLabel,
+                  _showDateTimePicker('入住时间', (dt) {
+                    setState(() {
+                      this._poOrder.dateTimeIn = dt;
+                    });
+                  }),
+                  _showDateTimePicker('离开时间', (dt) {
+                    this._poOrder.dateTimeOut = dt;
+                  }),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 
