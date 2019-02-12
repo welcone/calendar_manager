@@ -52,15 +52,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  PoOrder _poOrder = PoOrder()..roomLable = PoOrder.roomLabels[0];
-
+  PoOrder _poOrder = PoOrder();
+  /// 房源列表对应的订单图
+  Map<String , EventList<Event>> _map4RoomsEvents = Map();
+  /// 当前房源对应的订单列表
+  EventList<Event> _markedDateMap ;
   @override
   void initState() {
     // todo-wk 6> 解决返回的时候，因为没有 dateTimeOut 出错的bug
     this._poOrder.dateTimeIn = DateTime.now();
     this._poOrder.dateTimeOut = DateTime.now();
+    this._poOrder.roomLable = PoOrder.roomLabels[0];
+    /// 初始化房源事件容器
+    var iterator = PoOrder.roomLabels.iterator;
+    while( iterator.moveNext()){
+      _map4RoomsEvents.putIfAbsent(iterator.current,(){
+        return EventList<Event>(
+          events: {},
+        );
+      });
+    }
+    _markedDateMap = _map4RoomsEvents[this._poOrder.roomLable];
     super.initState();
   }
+
+  
 
   /// 返回房源列表
   get _showInput4RoomLabel {
@@ -84,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           hint: Text('点击选择'),
           items: _dropItems,
-          onChanged: saveDropDownItemData,
+          onChanged: _onChangeRoomLabels,
           value: this._poOrder.roomLable,
         ),
       ),
@@ -102,12 +118,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // todo-wk 1.3>
+  // todo-wk 14> done 房间号切换，对应的订单表也切换。
   /// 保存下来选中的数据项目(PO:https://www.cnblogs.com/whatarewords/p/8086120.html)
-  void saveDropDownItemData(t) {
+  /// 切换当前房源
+  void _onChangeRoomLabels(t) {
     _poOrder.roomLable = t;
     setState(() {
       this._poOrder.roomLable = t;
+      this._markedDateMap = this._map4RoomsEvents[t];
     });
   }
 
@@ -160,10 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   );
 
-  //
-  EventList<Event> _markedDateMap = new EventList<Event>(
-    events: {},
-  );
+
 
   get _calendarHeader {
     //日历头
