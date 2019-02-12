@@ -187,42 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  /// Example with custom icon
-  get _calendarCarousel {
-    return CalendarCarousel<Event>(
-      onDayPressed: (DateTime date, List<Event> events) {
-        this.setState(() => _currentDate = date);
-        events.forEach((event) => print(event.title));
-      },
 
-      weekendTextStyle: TextStyle(
-        color: Colors.red,
-      ),
-
-      thisMonthDayBorderColor: Colors.grey,
-//          weekDays: null, /// for pass null when you do not want to render weekDays
-//          headerText: Container( /// Example for rendering custom header
-//            child: Text('Custom Header'),
-//          ),
-//          markedDates: _markedDate,
-      weekFormat: true,
-      markedDatesMap: _markedDateMap,
-      height: 420.0,
-      selectedDateTime: _currentDate,
-//          daysHaveCircularBorder: false, /// null for not rendering any border, true for circular border, false for rectangular border
-      customGridViewPhysics: NeverScrollableScrollPhysics(),
-      markedDateShowIcon: true,
-      markedDateIconMaxShown: 2,
-      todayTextStyle: TextStyle(
-        color: Colors.blue,
-      ),
-      todayBorderColor: Colors.green,
-      markedDateMoreShowTotal:
-          true, // null for not showing hidden events indicator
-//          markedDateIconMargin: 9,
-//          markedDateIconOffset: 3,
-    );
-  }
 
   /// Example Calendar Carousel without header and custom prev & next button
   get _calendarCarouselNoHeader {
@@ -259,7 +224,6 @@ class _MyHomePageState extends State<MyHomePage> {
           selectedDayTextStyle: TextStyle(
             color: Colors.green,
           ),
-          minSelectedDate: _currentDate,
           maxSelectedDate: _currentDate.add(Duration(days: 60)),
 //      inactiveDateColor: Colors.black12,
           onCalendarChanged: (DateTime date) {
