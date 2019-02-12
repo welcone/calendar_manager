@@ -57,6 +57,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    // todo-wk 6> 解决返回的时候，因为没有 dateTimeOut 出错的bug
+    this._poOrder.dateTimeIn = DateTime.now();
+    this._poOrder.dateTimeOut = DateTime.now();
     super.initState();
   }
 
@@ -235,6 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// 标记点击的日期
   void _markEventOnCalendar(DateTime date) {
+
     while(date.isBefore(this._poOrder.dateTimeOut)){
       _markedDateMap.add(
           date, Event(title: 'event new', icon: _eventIcon, date: date));
