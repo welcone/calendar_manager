@@ -147,12 +147,13 @@ class _MyHomePageState extends State<MyHomePage> {
   String _currentMonth = '';
 
   // todo-wk 1> 使用枚举，使得每次调用的头像是随机的，而不是固定的.
-  /// 事件头像
+  /// 返回事件头像
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(1000)),
         border: Border.all(color: Colors.blue, width: 1.0)),
+    // todo-wk 13> 在头像上方，写入价格，下方写入日期，如果空间够
     child: new Icon(
       Icons.person,
       color: Colors.amber,
