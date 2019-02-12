@@ -236,20 +236,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// 标记点击的日期
   void _markEventOnCalendar(DateTime date) {
-    _markedDateMap.add(
-        date, Event(title: 'event new', icon: _eventIcon, date: date));
+    while(date.isBefore(this._poOrder.dateTimeOut)){
+      _markedDateMap.add(
+          date, Event(title: 'event new', icon: _eventIcon, date: date));
+      date = date.add(Duration(days: 1));
+      print('$date marked');
+    }
+
   }
 
-  /// 跳转到下一个页面
-  void _navigateTo(int index) async {}
+
 
   /// 处理跳转事件
   void _navigateToPageOrderSaver(BuildContext context, DateTime date) async {
-    final result = await Navigator.push(
+    this._poOrder = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (BuildContext context) =>
                 PageOrderSaver(this._poOrder..dateTimeIn = date)));
-    print('received data from page order saver${result}');
+    print('received data from page order saver:$_poOrder');
+    _markEventOnCalendar(this._poOrder.dateTimeIn);
   }
 }
