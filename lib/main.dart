@@ -51,7 +51,6 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-
 class _MyHomePageState extends State<MyHomePage> {
   PoOrder _poOrder = PoOrder()..roomLable = PoOrder.roomLabels[0];
 
@@ -66,8 +65,18 @@ class _MyHomePageState extends State<MyHomePage> {
   /// 返回房源列表
   get _showInput4RoomLabel {
     return Container(
-      width: 200,
+      // todo-wk 8> 将控件往右边移动
+      alignment: Alignment.centerRight,
+      margin: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        border: Border.all(
+          color: Colors.yellow,
+          width: 2
+        )
+      ),
       child: ListTile(
+        leading: Icon(Icons.home),
         trailing: DropdownButton(
           style: TextStyle(
             color: Colors.black,
@@ -107,17 +116,23 @@ class _MyHomePageState extends State<MyHomePage> {
     return new Scaffold(
         appBar: new AppBar(
           title: new Text(widget.title),
-          actions: <Widget>[_showInput4RoomLabel],
+
         ),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              _navigateToPageOrderSaver(context, DateTime.now());
-            }, icon: Icon(Icons.save), label: Text('添加')),
+              _clearEventOnCalendar(this._poOrder.dateTimeIn);// todo-wk >
+            },
+            icon: Icon(Icons.arrow_back),
+            label: Text('撤销')),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[_calendarHeader, _calendarCarouselNoHeader],
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              _showInput4RoomLabel,
+              _calendarHeader,
+              _calendarCarouselNoHeader
+            ],
           ),
         ));
   }
@@ -238,17 +253,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// 标记点击的日期
   void _markEventOnCalendar(DateTime date) {
-
-    while(date.isBefore(this._poOrder.dateTimeOut)){
+    while (date.isBefore(this._poOrder.dateTimeOut)) {
       _markedDateMap.add(
           date, Event(title: 'event new', icon: _eventIcon, date: date));
       date = date.add(Duration(days: 1));
       print('$date marked');
     }
-
   }
-
-
+  /// 撤销标记点击的日期
+  void _clearEventOnCalendar(DateTime date) {
+    while (date.isBefore(this._poOrder.dateTimeOut)) {
+      setState(() {
+        _markedDateMap.remove(
+            date, Event(title: 'event new', icon: _eventIcon, date: date));
+        date = date.add(Duration(days: 1));
+      });
+      print('$date removed');
+    }
+  }
 
   /// 处理跳转事件
   void _navigateToPageOrderSaver(BuildContext context, DateTime date) async {

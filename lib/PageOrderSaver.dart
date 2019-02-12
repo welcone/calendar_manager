@@ -119,7 +119,8 @@ class _State4OrderSaver extends State<PageOrderSaver> {
     return ListTile(
       title: Text(pickerLabel),
       trailing: Container(
-        width: 200,
+        // todo-wk 7> 这里可能在小屏手机上无法展示
+        width: 250,
         child: DateTimePickerFormField(
           inputType: _inputType,
           editable: true,
