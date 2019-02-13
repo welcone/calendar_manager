@@ -82,7 +82,6 @@ class _State4OrderSaver extends State<PageOrderSaver> {
             padding: EdgeInsets.all(8),
             child: Center(
               // todo-wk 11>  使用表单验证数据可靠性 https://www.cnblogs.com/pengshaomin/p/8945720.html
-
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,6 +96,10 @@ class _State4OrderSaver extends State<PageOrderSaver> {
                   _showDateTimePicker('离开时间', (dt) {
                     this._poOrder.dateTimeOut = dt;
                   }),
+                  // todo-wk 15> 引入订单实际成交金额
+                  TextField(
+                    keyboardType: TextInputType.number,
+                  )
                 ],
               ),
             ),

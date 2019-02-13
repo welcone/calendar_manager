@@ -33,7 +33,7 @@ class PoOrder {
   double rate;
 
   /// 实际收入
-  double income;
+  double income = 0;
   String note;
 
   @override

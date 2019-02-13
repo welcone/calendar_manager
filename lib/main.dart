@@ -53,20 +53,24 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PoOrder _poOrder = PoOrder();
+
   /// 房源列表对应的订单图
-  Map<String , EventList<Event>> _map4RoomsEvents = Map();
+  Map<String, EventList<Event>> _map4RoomsEvents = Map();
+
   /// 当前房源对应的订单列表
-  EventList<Event> _markedDateMap ;
+  EventList<Event> _markedDateMap;
+
   @override
   void initState() {
-    // todo-wk 6> 解决返回的时候，因为没有 dateTimeOut 出错的bug
+    // todo-wk 6> done 解决返回的时候，因为没有 dateTimeOut 出错的bug
     this._poOrder.dateTimeIn = DateTime.now();
     this._poOrder.dateTimeOut = DateTime.now();
     this._poOrder.roomLable = PoOrder.roomLabels[0];
+
     /// 初始化房源事件容器
     var iterator = PoOrder.roomLabels.iterator;
-    while( iterator.moveNext()){
-      _map4RoomsEvents.putIfAbsent(iterator.current,(){
+    while (iterator.moveNext()) {
+      _map4RoomsEvents.putIfAbsent(iterator.current, () {
         return EventList<Event>(
           events: {},
         );
@@ -76,21 +80,15 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  
-
   /// 返回房源列表
   get _showInput4RoomLabel {
     return Container(
-      // todo-wk 8> 将控件往右边移动
+      // todo-wk 8> done 将控件往右边移动
       alignment: Alignment.centerRight,
       margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        border: Border.all(
-          color: Colors.yellow,
-          width: 2
-        )
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          border: Border.all(color: Colors.yellow, width: 2)),
       child: ListTile(
         leading: Icon(Icons.home),
         trailing: DropdownButton(
@@ -134,11 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return new Scaffold(
         appBar: new AppBar(
           title: new Text(widget.title),
-
         ),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              _clearEventOnCalendar(this._poOrder.dateTimeIn);// todo-wk >
+              _clearEventOnCalendar(this._poOrder.dateTimeIn);
             },
             icon: Icon(Icons.arrow_back),
             label: Text('撤销')),
@@ -166,19 +163,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // todo-wk 1> 使用枚举，使得每次调用的头像是随机的，而不是固定的.
   /// 返回事件头像
-  static Widget _eventIcon = new Container(
-    decoration: new BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(1000)),
-        border: Border.all(color: Colors.blue, width: 1.0)),
-    // todo-wk 13> 在头像上方，写入价格，下方写入日期，如果空间够
-    child: new Icon(
-      Icons.person,
-      color: Colors.amber,
-    ),
-  );
-
-
+    _eventIcon(DateTime date){
+    return  Container(
+      decoration:  BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(1000)),
+          border: Border.all(color: Colors.blue, width: 1.0)),
+      // todo-wk 13> 在头像上方，写入价格，下方写入日期，如果空间够
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          Icon(
+            Icons.person,
+            color: Colors.amber,
+          ),
+          Column(
+            children: <Widget>[
+              Text(
+                _poOrder.income.toString(),
+                style: TextStyle(fontSize: 10, color: Colors.black),
+              ),
+              Text(
+                date.day.toString(),
+                style: TextStyle(fontSize: 10),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   get _calendarHeader {
     //日历头
@@ -273,21 +287,22 @@ class _MyHomePageState extends State<MyHomePage> {
     // todo-wk 12> done 解决录入订单的日期bug，用到了 date.difference
     int diffDays = date.difference(this._poOrder.dateTimeOut).inDays;
     print(' daydiffs: $diffDays');
-    while (diffDays<0) {
+    while (diffDays < 0) {
       _markedDateMap.add(
-          date, Event(title: 'event new', icon: _eventIcon, date: date));
+          date, Event(title: 'event new', icon: _eventIcon(date), date: date));
       print('$date marked, daydiffs: $diffDays');
       date = date.add(Duration(days: 1));
       diffDays = date.difference(this._poOrder.dateTimeOut).inDays;
     }
   }
+
   // todo-wk 9 > Done 撤销上一次操作
   /// 撤销标记点击的日期
   void _clearEventOnCalendar(DateTime date) {
     while (date.isBefore(this._poOrder.dateTimeOut)) {
       setState(() {
         _markedDateMap.remove(
-            date, Event(title: 'event new', icon: _eventIcon, date: date));
+            date, Event(title: 'event new', icon: _eventIcon(date), date: date));
         date = date.add(Duration(days: 1));
       });
       print('$date removed');
