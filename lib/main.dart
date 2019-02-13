@@ -180,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Column(
             children: <Widget>[
               Text(
-                _poOrder.income.toString(),
+                '${_poOrder.incomeDaily}',
                 style: TextStyle(fontSize: 10, color: Colors.black),
               ),
               Text(

@@ -1,6 +1,5 @@
 /// PO 数据类，用于存储订单数据
 class PoOrder {
-
   // todo-wk 1.2>
   static const roomLabels = [
     '华阳605',
@@ -35,9 +34,18 @@ class PoOrder {
   /// 实际收入
   double income = 0;
   String note;
+  double incomeDaily;
+
+  double getIncomeDaily() => incomeDaily;
+
+  void setIncomeDaily(double value) {
+    assert(this.dateTimeOut != null);
+    assert(this.dateTimeIn != null);
+    incomeDaily = value / this.dateTimeOut.difference(this.dateTimeIn).inDays;
+  }
 
   @override
   String toString() {
-    return 'PoOrder{phoneNumber: $phoneNumber, name: $name, roomLable: $roomLable, channel_account: $channel_account, channel_cloud: $channel_cloud, dateTimeIn: $dateTimeIn, dateTimeOut: $dateTimeOut, rate: $rate, income: $income, note: $note}';
+    return 'PoOrder{phoneNumber: $phoneNumber, name: $name, roomLable: $roomLable, channel_account: $channel_account, channel_cloud: $channel_cloud, dateTimeIn: $dateTimeIn, dateTimeOut: $dateTimeOut, rate: $rate, income: $income, note: $note, _incomeDaily: $incomeDaily}';
   }
 }

@@ -96,9 +96,20 @@ class _State4OrderSaver extends State<PageOrderSaver> {
                   _showDateTimePicker('离开时间', (dt) {
                     this._poOrder.dateTimeOut = dt;
                   }),
-                  // todo-wk 15> 引入订单实际成交金额
-                  TextField(
-                    keyboardType: TextInputType.number,
+                  // todo-wk 15> done 引入订单实际成交金额
+                  ListTile(
+                    title: Text('成交总额'),
+                    trailing: Container(
+                      width: 250,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        onChanged: (result){
+                          assert(result.isNotEmpty);
+                          _poOrder.setIncomeDaily(double.parse(result));
+                          print('result is ${result}');
+                        },
+                      ),
+                    ),
                   )
                 ],
               ),
