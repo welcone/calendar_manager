@@ -8,6 +8,8 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:calendar_manager/PageOrderSaver.dart';
 import 'PoOrder.dart';
 
+// todo-wk 16> 日历布局在iPad上有严重问题。
+
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -183,11 +185,11 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Text(
                 '${_poOrder.incomeDaily}',
-                style: TextStyle(fontSize: 10, color: Colors.black),
+                style: TextStyle(fontSize: 12, color: Colors.redAccent,fontWeight: FontWeight.bold),
               ),
               Text(
                 date.day.toString(),
-                style: TextStyle(fontSize: 10),
+                style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
               )
             ],
           ),
