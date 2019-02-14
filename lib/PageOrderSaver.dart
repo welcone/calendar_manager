@@ -97,20 +97,7 @@ class _State4OrderSaver extends State<PageOrderSaver> {
                     this._poOrder.dateTimeOut = dt;
                   }),
                   // todo-wk 15> done 引入订单实际成交金额
-                  ListTile(
-                    title: Text('成交总额'),
-                    trailing: Container(
-                      width: 250,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        onChanged: (result){
-                          assert(result.isNotEmpty);
-                          _poOrder.setIncomeDaily(double.parse(result));
-                          print('result is ${result}');
-                        },
-                      ),
-                    ),
-                  )
+                  _showIncomeEditor()
                 ],
               ),
             ),
@@ -118,6 +105,24 @@ class _State4OrderSaver extends State<PageOrderSaver> {
         }),
       ),
     );
+  }
+
+  ListTile _showIncomeEditor() {
+    return // todo-wk 15> done 引入订单实际成交金额
+                ListTile(
+                  title: Text('成交总额'),
+                  trailing: Container(
+                    width: 250,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (result){
+                        assert(result.isNotEmpty);
+                        _poOrder.setIncomeDaily(double.parse(result));
+                        print('result is ${result}');
+                      },
+                    ),
+                  ),
+                );
   }
 
   //DateFormat("EEEE, MMMM d, yyyy 'at' h:mma"),

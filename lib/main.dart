@@ -62,6 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
   /// 当前房源对应的订单列表
   EventList<Event> _markedDateMap;
 
+//  get _navigateToPageSetting => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+//    return PageSetting();
+//  }));
+
   //dasds
 
   @override
@@ -136,6 +140,13 @@ class _MyHomePageState extends State<MyHomePage> {
     return new Scaffold(
         appBar: new AppBar(
           title: new Text(widget.title),
+          actions: <Widget>[
+            // todo-wk 19> 在这里弄一个设置弹出菜单， 显示两个项目：
+            // 1> 管理房源
+            // 2> 管理渠道
+            // 3> 账号管理
+            IconButton(icon: DropdownButton(items: null, onChanged: null), onPressed: (){}),
+          ],
         ),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
