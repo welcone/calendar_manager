@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'BottomOptions/PageCalendar.dart';
+import 'package:calendar_manager/BottomOptions/PageSettings.dart';
 
 void main() => runApp(new MyApp());
 
@@ -32,7 +33,7 @@ class State4MyApp extends State<MyApp> {
 
   get _showTodo => Text('任务处理');
 
-  get _showSettings => Text('设置');
+  get _showSettings => PageSettings();
   
 
   get _bottomNaviItems {
