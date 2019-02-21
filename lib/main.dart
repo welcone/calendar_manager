@@ -1,6 +1,7 @@
+import 'package:calendar_manager/Calendar/PageCalendar.dart';
+import 'package:calendar_manager/Cooperations/PageCooperations.dart';
 import 'package:flutter/material.dart';
-import 'BottomOptions/PageCalendar.dart';
-import 'package:calendar_manager/BottomOptions/PageSettings.dart';
+
 
 void main() => runApp(new MyApp());
 
@@ -14,7 +15,6 @@ class MyApp extends StatefulWidget {
 
 class State4MyApp extends State<MyApp> {
   var _selectedIndex = 0;
-
   final _widgetOptions = [
   ];
 
@@ -22,25 +22,17 @@ class State4MyApp extends State<MyApp> {
   @override
   void initState() {
     _widgetOptions.addAll([
-      _showCalendar,
-      _showTodo,
-      _showSettings,
+      PageCalendar(title: '房源日历',),
+      Text('任务处理'),
+      PageCooperations(title: '多人协作',),
     ]);
     super.initState();
   }
-
-  get _showCalendar => PageCalendar(title: '房源日历',);
-
-  get _showTodo => Text('任务处理');
-
-  get _showSettings => PageSettings();
-  
-
   get _bottomNaviItems {
     return <BottomNavigationBarItem>[
       BottomNavigationBarItem(icon: Icon(Icons.calendar_today),title: Text('房源日历')),
       BottomNavigationBarItem(icon: Icon(Icons.check_box),title: Text('任务清单')),
-      BottomNavigationBarItem(icon: Icon(Icons.settings),title: Text('设置')),
+      BottomNavigationBarItem(icon: Icon(Icons.people),title: Text('多人协作')),
     ];
   }
 
@@ -50,14 +42,6 @@ class State4MyApp extends State<MyApp> {
       title: 'Calendar Manager',
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(

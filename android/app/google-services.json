@@ -1,0 +1,113 @@
+{
+  "project_info": {
+    "project_number": "1095228669077",
+    "firebase_url": "https://baby-names-app-db-8f301.firebaseio.com",
+    "project_id": "baby-names-app-db-8f301",
+    "storage_bucket": "baby-names-app-db-8f301.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095228669077:android:6c3b7b5a7d7dd259",
+        "android_client_info": {
+          "package_name": "calendar.flutter.welcone.calendarmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095228669077-fcmoi78q1j4lp66g7nfgp03o7h3rj4s4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "calendar.flutter.welcone.calendarmanager",
+            "certificate_hash": "af7ea0a9f576b27722a4c8e98eeb5ce270c62cc8"
+          }
+        },
+        {
+          "client_id": "1095228669077-7gi8gb20h4t20ls8b1kutsq073n1ebno.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbb5TL7HRDD28RVE5YCWLm2oKLBgES20I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095228669077-7gi8gb20h4t20ls8b1kutsq073n1ebno.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1095228669077-anpb087es22guc12e6088dloqlkqmjvq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "calendar.flutter.welcone.calendarManager"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095228669077:android:3aa8a5291ed5a6c2",
+        "android_client_info": {
+          "package_name": "name.baby.flutter.welcone.babynames"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095228669077-6g5isfrmn1hn2oh7d0q06n7rburqq9rn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "name.baby.flutter.welcone.babynames",
+            "certificate_hash": "af7ea0a9f576b27722a4c8e98eeb5ce270c62cc8"
+          }
+        },
+        {
+          "client_id": "1095228669077-7gi8gb20h4t20ls8b1kutsq073n1ebno.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbb5TL7HRDD28RVE5YCWLm2oKLBgES20I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095228669077-7gi8gb20h4t20ls8b1kutsq073n1ebno.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1095228669077-anpb087es22guc12e6088dloqlkqmjvq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "calendar.flutter.welcone.calendarManager"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
