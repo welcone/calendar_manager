@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:calendar_manager/widgets4GoogleLogin/reactive_refresh_indicator.dart';
 import 'package:calendar_manager/widgets4GoogleLogin/google_sign_in_btn.dart';
 import 'package:calendar_manager/logger.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// 提供：
 /// 1）用户登陆
@@ -24,21 +27,17 @@ class _State4PageSettings extends State<PageCooperations> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String TAG = 'Auth';
   GoogleSignIn _googleSignIn = GoogleSignIn();
-
   GoogleSignInAccount _currentGoogleUser;
 
-  get _onTap4Cooperations {
-    switch (_cooperationsEnabled) {
-      case true:
-        {
-          /// 跳转到团队协作页面
-          break;
-        }
-      case false:
-        {
-          /// 跳转到邮件登陆
-        }
-    }
+  // 验证是否登陆
+  bool _isSignInded = false;
+
+
+
+  String urlTask = 'https://gph.is/2xVFjhJ';
+  /// 根据登陆账号的邮箱，去查询服务器中，与它存在对应关系的的其他用户的邮件地址。
+  FutureOr Function() get _loadUsers {
+
   }
 
   @override
@@ -48,17 +47,15 @@ class _State4PageSettings extends State<PageCooperations> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ReactiveRefreshIndicator(
-        child: _showBody,
-        onRefresh: _onRefresh,
-        isRefreshing: _isRefreshing,
-      ),
+      body:_showLogInPage(),
     );
   }
 
-  get _showBody {
+  get _showGoogleSignButton {
     return Center(
       child: GoogleSignInButton(
+        assetsPath: 'assets/images/glogo.png',
+        buttonText: '谷歌登陆',
         onPressed: () => _updateIsRefreshing(true),
       ),
     );
@@ -85,14 +82,14 @@ class _State4PageSettings extends State<PageCooperations> {
 
   Future<Null> _onSignInGoogle() async {
     Logger.log(TAG, message: '开始登陆....');
-    var currentUser = _googleSignIn.currentUser;
+    _currentGoogleUser = _googleSignIn.currentUser;
 
-    if (currentUser == null) {
+    if (_currentGoogleUser == null) {
       Logger.log(TAG, message: 'currentUser...为空.');
       _googleSignIn.signIn().then(
-        (seccessInResult) {
+            (seccessInResult) {
           Logger.log(TAG, message: '登陆成功...seccessInResult:$seccessInResult');
-          currentUser = seccessInResult;
+          _currentGoogleUser = seccessInResult;
           _updateIsRefreshing(true);
           _showErrorSnacker('登陆成功');
         },
@@ -100,24 +97,65 @@ class _State4PageSettings extends State<PageCooperations> {
           Logger.log(TAG, message: '发生错误：$errorMessage');
           _showErrorSnacker('发生错误：$errorMessage');
         },
-      );
-    }else{
-      _currentGoogleUser = currentUser;
-      Logger.log(TAG, message: 'Current Login User Info:'
-          'display Name:${_currentGoogleUser.displayName}\n'
-          'email:${_currentGoogleUser.email}\n'
-          'photoUrl:${_currentGoogleUser.photoUrl}');
+      ).whenComplete(_loadUsers);
+    } else {
+      Logger.log(TAG,
+          message: 'Current Login User Info:'
+              'display Name:${_currentGoogleUser.displayName}\n'
+              'email:${_currentGoogleUser.email}\n'
+              'photoUrl:${_currentGoogleUser.photoUrl}');
       _updateIsRefreshing(true);
       _showErrorSnacker('登陆成功');
     }
-
-
-
   }
 
   void _showErrorSnacker(String errorMessage) {
     this._updateIsRefreshing(false);
     _scaffoldKey.currentState
         .showSnackBar(SnackBar(content: Text(errorMessage)));
+  }
+
+  Widget _showLogInPage() {
+    return Container(
+        padding: EdgeInsets.all(8),
+        alignment: Alignment.center,
+        child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Flexible(
+                child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/giphy.gif')),
+              ),
+            )),
+            Flexible(
+              flex: 1,
+              child: ReactiveRefreshIndicator(
+                child: _showGoogleSignButton,
+                onRefresh: _onRefresh,
+                isRefreshing: _isRefreshing,
+              ),
+            )
+          ],
+        ));
+  }
+
+  Widget _showManageMents() {
+    return ListView.builder(
+        itemCount: 3,
+        itemBuilder: (BuildContext context, int) {
+          return ListTile(
+            leading: _currentGoogleUser == null
+                ? Icon(Icons.person)
+                : CachedNetworkImage(imageUrl: _currentGoogleUser.photoUrl),
+            title: Text('Antonio steve'),
+            subtitle: Text('owner'),
+          );
+        });
   }
 }

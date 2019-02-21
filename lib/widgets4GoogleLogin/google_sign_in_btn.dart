@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   final Function onPressed;
+  final String assetsPath;
+  final String buttonText;
 
   GoogleSignInButton({
     Key key,
-    this.onPressed,
+    @required this.onPressed, @required this.assetsPath, @required this.buttonText,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class GoogleSignInButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Image.asset(
-            "assets/images/glogo.png",
+            assetsPath,
             height: 18.0,
             width: 18.0,
           ),
@@ -28,7 +30,7 @@ class GoogleSignInButton extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              "Sign in with Google",
+              buttonText,
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w500,
