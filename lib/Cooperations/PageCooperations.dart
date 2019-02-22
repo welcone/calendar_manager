@@ -1,15 +1,15 @@
 import 'dart:async';
-
+import 'PoUser.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_manager/widgets4GoogleLogin/reactive_refresh_indicator.dart';
 import 'package:calendar_manager/widgets4GoogleLogin/google_sign_in_btn.dart';
 import 'package:calendar_manager/logger.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// 提供：
-/// 1）用户登陆
-/// 2）角色邀请（通过
+enum AuthStatus { AUTH_SOCIAL, AUTH_LOGIN }
+
 class PageCooperations extends StatefulWidget {
   String title;
 
@@ -22,23 +22,16 @@ class PageCooperations extends StatefulWidget {
 }
 
 class _State4PageSettings extends State<PageCooperations> {
-  bool _cooperationsEnabled = false;
   bool _isRefreshing = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String TAG = 'Auth';
   GoogleSignIn _googleSignIn = GoogleSignIn();
   GoogleSignInAccount _currentGoogleUser;
-
-  // 验证是否登陆
-  bool _isSignInded = false;
-
-
-
   String urlTask = 'https://gph.is/2xVFjhJ';
-  /// 根据登陆账号的邮箱，去查询服务器中，与它存在对应关系的的其他用户的邮件地址。
-  FutureOr Function() get _loadUsers {
 
-  }
+  var _authStatus = AuthStatus.AUTH_SOCIAL;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +40,7 @@ class _State4PageSettings extends State<PageCooperations> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body:_showLogInPage(),
+      body: _loadPages(),
     );
   }
 
@@ -77,7 +70,15 @@ class _State4PageSettings extends State<PageCooperations> {
   }
 
   Future<Null> _onRefresh() async {
-    return await _onSignInGoogle();
+
+    switch(this._authStatus){
+      case AuthStatus.AUTH_SOCIAL:{
+        return await _onSignInGoogle();
+      }
+      case AuthStatus.AUTH_LOGIN:{
+        return await _onLoadingUsers();
+      }
+    }
   }
 
   Future<Null> _onSignInGoogle() async {
@@ -87,17 +88,19 @@ class _State4PageSettings extends State<PageCooperations> {
     if (_currentGoogleUser == null) {
       Logger.log(TAG, message: 'currentUser...为空.');
       _googleSignIn.signIn().then(
-            (seccessInResult) {
+        (seccessInResult) {
           Logger.log(TAG, message: '登陆成功...seccessInResult:$seccessInResult');
           _currentGoogleUser = seccessInResult;
           _updateIsRefreshing(true);
           _showErrorSnacker('登陆成功');
+          // 接下来是传输数据到谷歌firestore
+          _uploadCurrentUserToFireStore();
         },
         onError: (errorMessage) {
           Logger.log(TAG, message: '发生错误：$errorMessage');
           _showErrorSnacker('发生错误：$errorMessage');
         },
-      ).whenComplete(_loadUsers);
+      );
     } else {
       Logger.log(TAG,
           message: 'Current Login User Info:'
@@ -115,7 +118,7 @@ class _State4PageSettings extends State<PageCooperations> {
         .showSnackBar(SnackBar(content: Text(errorMessage)));
   }
 
-  Widget _showLogInPage() {
+  Widget _loadPages() {
     return Container(
         padding: EdgeInsets.all(8),
         alignment: Alignment.center,
@@ -157,5 +160,36 @@ class _State4PageSettings extends State<PageCooperations> {
             subtitle: Text('owner'),
           );
         });
+  }
+
+  Firestore _firestore = Firestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  /// 将获取到的谷歌用户信息存储到谷歌firestore
+  void _uploadCurrentUserToFireStore() async {
+    Map<String, String> docData = Map();
+    docData.putIfAbsent(PoUser.keyName, () => _currentGoogleUser.displayName);
+    docData.putIfAbsent(PoUser.keyPhotoUrl, () => _currentGoogleUser.photoUrl);
+    docData.putIfAbsent(PoUser.keyEmail, () => _currentGoogleUser.email);
+    var documentReference =
+        _firestore.collection(PoUser.keyUsers).document(_currentGoogleUser.email);
+    await documentReference.setData(docData).then(
+        (result){
+          // todo-wk Friday, February 22, 2019:17:44> 在这里开始显示可分享的列表
+        },
+        onError: (error){
+          // todo-wk Friday, February 22, 2019:17:44> 在这里显示错误
+          _showErrorSnacker('联络谷歌服务器错误！');
+          Logger.logd(message: '$error');
+        }
+    );
+  }
+  /// 加载user
+  _onLoadingUsers() {
+
   }
 }
