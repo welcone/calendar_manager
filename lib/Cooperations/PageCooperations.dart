@@ -40,7 +40,11 @@ class _State4PageSettings extends State<PageCooperations> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: _loadPages(),
+      body: ReactiveRefreshIndicator(
+        child: _loadPages(),
+        onRefresh: _onRefresh,
+        isRefreshing: _isRefreshing,
+      ),
     );
   }
 
@@ -138,11 +142,7 @@ class _State4PageSettings extends State<PageCooperations> {
             )),
             Flexible(
               flex: 1,
-              child: ReactiveRefreshIndicator(
-                child: _showGoogleSignButton,
-                onRefresh: _onRefresh,
-                isRefreshing: _isRefreshing,
-              ),
+              child: _showGoogleSignButton
             )
           ],
         ));
